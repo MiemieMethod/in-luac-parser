@@ -91,12 +91,12 @@ fn remap_opcode(opcode: u8) -> u8 {
 fn lua_instruction<'a>(header: &LuaHeader) -> impl Parser<&'a [u8], u32, ErrorTree<&'a [u8]>> {
     #[inline]
     fn decode_opcode(insn: u32) -> u8 {
-        (insn & 0xFF) as u8
+        (insn & 0x7F) as u8
     }
 
     #[inline]
     fn set_opcode(insn: u32, code: u8) -> u32 {
-        (insn & !0xFF) | code as u32
+        (insn & !0x7F) | code as u32
     }
 
     complete::u32(header.endian()).map(|insn| {
